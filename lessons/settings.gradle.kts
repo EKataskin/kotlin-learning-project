@@ -5,12 +5,21 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
+}
+
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
 }
 rootProject.name = "lessons"
 
-include("m1l1-first", "m1l2-basic")
+include("m1l1-first")
+include("m1l2-basic")
 include("m1l3-func")
 include("m1l4-oop")
 include("m2l1-dsl")
