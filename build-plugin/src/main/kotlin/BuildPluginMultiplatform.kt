@@ -1,4 +1,4 @@
-package ru.ekataskin..plugin
+package ru.ekataskin.plugin
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Plugin

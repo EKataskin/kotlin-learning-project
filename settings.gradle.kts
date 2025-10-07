@@ -19,3 +19,4 @@ plugins {
 rootProject.name = "kotlin-learning-project"
 
 includeBuild("lessons")
+includeBuild("backend")
