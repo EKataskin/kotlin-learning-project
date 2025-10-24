@@ -1,6 +1,6 @@
 import java.net.URL
 
-rootProject.name = "backend-build"
+rootProject.name = "build-plugin"
 
 dependencyResolutionManagement {
     versionCatalogs {
