@@ -1,4 +1,5 @@
 plugins {
+    kotlin("jvm")
     // Apply the Application plugin to add support for building an executable JVM application.
     application
 }

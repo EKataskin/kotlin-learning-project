@@ -6,11 +6,11 @@ gradlePlugin {
     plugins {
         register("build-jvm") {
             id = "build-jvm"
-            implementationClass = "ru.ekataskin.BuildPluginJvm"
+            implementationClass = "ru.ekataskin.plugin.BuildPluginJvm"
         }
         register("build-kmp") {
             id = "build-kmp"
-            implementationClass = "ru.ekataskin.BuildPluginMultiplatform"
+            implementationClass = "ru.ekataskin.plugin.BuildPluginMultiplatform"
         }
     }
 }
