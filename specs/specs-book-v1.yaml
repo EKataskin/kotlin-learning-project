@@ -228,7 +228,7 @@ components:
         - $ref: '#/components/schemas/RequestDebug'
         - type: object
           properties:
-            ad:
+            book:
               $ref: '#/components/schemas/BookCreateObject'
 
     BookReadObject:
@@ -356,7 +356,7 @@ components:
 
     RequestDebugMode:
       type: string
-      enum: [prod, test]
+      enum: [prod, test, stub]
 
     RequestDebugStubs:
       type: string
