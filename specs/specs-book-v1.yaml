@@ -1,0 +1,373 @@
+openapi: 3.0.3
+info:
+  title: "Book Tracker"
+  description: A tool for tracking the progress of reading books
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: book
+    description: Книга
+  - name: author
+    description: Автор
+paths:
+  /book/create:
+    post:
+      tags: [book]
+      summary: Create book
+      operationId: bookCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookCreateResponse'
+  /book/read:
+    post:
+      tags: [book]
+      summary: Read book
+      operationId: bookRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookReadResponse'
+  /book/update:
+    post:
+      tags: [book]
+      summary: Update book
+      operationId: bookUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookUpdateResponse'
+  /book/delete:
+    post:
+      tags: [book]
+      summary: Delete book
+      operationId: bookDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookDeleteResponse'
+  /book/search:
+    post:
+      tags: [book]
+      summary: Search books
+      operationId: bookSearch
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookSearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookSearchResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/BookCreateRequest'
+          read:   '#/components/schemas/BookReadRequest'
+          update: '#/components/schemas/BookUpdateRequest'
+          delete: '#/components/schemas/BookDeleteRequest'
+          search: '#/components/schemas/BookSearchRequest'
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum: [success, error]
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/BookCreateResponse'
+          read:   '#/components/schemas/BookReadResponse'
+          update: '#/components/schemas/BookUpdateResponse'
+          delete: '#/components/schemas/BookDeleteResponse'
+          search: '#/components/schemas/BookSearchResponse'
+      properties:
+        responseType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+
+
+    BookId:
+      type: integer
+      description: Идентификатор книги
+    BookLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseBook:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        author:
+          type: string
+          description: Автор книги
+        title:
+          type: string
+          description: Наименование книги
+        series:
+          type: string
+          description: Серия
+        seriesNumber:
+          type: integer
+          description: Номер в серии
+        year:
+          type: integer
+          description: Год выхода
+        url:
+          type: string
+          description: Ссылка
+        notes:
+          type: string
+          description: Примечания
+        dateStart:
+          type: string
+          format: date
+          description: Дата начала чтения
+        dateEnd:
+          type: string
+          format: date
+          description: Дата окончания чтения
+        bookState:
+          $ref: '#/components/schemas/BookState'
+
+    BookState:
+      type: string
+      description: 'Статус книги. Возможные значения: запланирована, читается, прочитана'
+      enum: [planned, reading, read]
+
+    BookCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseBook'
+
+    BookCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            ad:
+              $ref: '#/components/schemas/BookCreateObject'
+
+    BookReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/BookId'
+
+    BookReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            book:
+              $ref: '#/components/schemas/BookReadObject'
+
+    BookUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseBook'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/BookId'
+            lock:
+              $ref: '#/components/schemas/BookLock'
+
+    BookUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            book:
+              $ref: '#/components/schemas/BookUpdateObject'
+
+    BookDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/BookId'
+
+    BookSearchFilter:
+      type: object
+      description: Набор фильтров для поиска
+      properties:
+        searchString:
+          type: string
+          description: Поисковая строка, которая будет искаться в карточках книг
+
+    BookSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            bookFilter:
+              $ref: '#/components/schemas/BookSearchFilter'
+
+    BookResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseBook'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/BookId'
+            lock:
+              $ref: '#/components/schemas/BookLock'
+
+    BookResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом книги
+          properties:
+            ad:
+              $ref: '#/components/schemas/BookResponseObject'
+
+    BookResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            ads:
+              type: array
+              items:
+                $ref: '#/components/schemas/BookResponseObject'
+
+    BookCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/BookResponseSingle'
+
+    BookReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/BookResponseSingle'
+
+    BookUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/BookResponseSingle'
+
+    BookDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/BookResponseSingle'
+
+    BookSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/BookResponseMulti'
+
+    RequestDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/RequestDebugStubs'
+
+    RequestDebugMode:
+      type: string
+      enum: [prod, test]
+
+    RequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - cantDelete
+        - badId
+        - badAuthor
+        - badTitle
+        - badState
+        - badUrl
+        - badSearchString
