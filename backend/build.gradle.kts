@@ -2,17 +2,16 @@ plugins {
     kotlin("jvm") apply false
 }
 
-group = "ru.ekataskin"
+group = "ru.ekataskin.book-tracker"
 version = "0.0.1"
 
-repositories {
-    mavenCentral()
-}
-
-subprojects {
+allprojects {
     repositories {
         mavenCentral()
     }
+}
+
+subprojects {
     group = rootProject.group
     version = rootProject.version
 }

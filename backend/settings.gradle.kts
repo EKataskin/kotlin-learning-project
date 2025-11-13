@@ -4,12 +4,10 @@
 // https://docs.gradle.org/current/userguide/settings_file_basics.html
 
 pluginManagement {
-    includeBuild("../build-plugin")
     plugins {
         val kotlinVersion: String by settings
         kotlin("jvm") version kotlinVersion
         id("build-jvm") apply false
-        id("build-kmp") apply false
     }
     repositories {
         mavenCentral()
