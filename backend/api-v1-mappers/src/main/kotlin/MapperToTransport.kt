@@ -1,23 +1,44 @@
 package ru.ekataskin.booktracker.mappers
 
-import ru.ekataskin.booktracker.api.v1.models.BookCreateResponse
-import ru.ekataskin.booktracker.api.v1.models.BookResponseObject
-import ru.ekataskin.booktracker.api.v1.models.IResponse
-import ru.ekataskin.booktracker.api.v1.models.ResponseResult
+import ru.ekataskin.booktracker.api.v1.models.*
 import ru.ekataskin.booktracker.common.Context
 import ru.ekataskin.booktracker.common.models.*
 
 fun Context.toTransport(): IResponse = when (val cmd = command) {
     CommandModel.NONE -> throw Exception("Unknown command $cmd")
     CommandModel.CREATE -> toTransportCreate()
-    CommandModel.READ -> TODO()
-    CommandModel.UPDATE -> TODO()
-    CommandModel.DELETE -> TODO()
-    CommandModel.SEARCH -> TODO()
+    CommandModel.READ -> toTransportRead()
+    CommandModel.UPDATE -> toTransportUpdate()
+    CommandModel.DELETE -> toTransportDelete()
+    CommandModel.SEARCH -> toTransportSearch()
 }
 
 fun Context.toTransportCreate() = BookCreateResponse(
     book = bookResponse.toTransport(),
+    result = state.toTransport(),
+    errors = errors.toTransport()
+)
+
+fun Context.toTransportRead() = BookReadResponse(
+    book = bookResponse.toTransport(),
+    result = state.toTransport(),
+    errors = errors.toTransport()
+)
+
+fun Context.toTransportUpdate() = BookUpdateResponse(
+    book = bookResponse.toTransport(),
+    result = state.toTransport(),
+    errors = errors.toTransport()
+)
+
+fun Context.toTransportDelete() = BookDeleteResponse(
+    book = bookResponse.toTransport(),
+    result = state.toTransport(),
+    errors = errors.toTransport()
+)
+
+fun Context.toTransportSearch() = BookSearchResponse(
+    books = booksResponse.toTransport(),
     result = state.toTransport(),
     errors = errors.toTransport()
 )
@@ -53,3 +74,10 @@ private fun List<ErrorModel>.toTransport(): List<ru.ekataskin.booktracker.api.v1
     .map { it.toTransport() }
     .toList()
     .takeIf { it.isNotEmpty() }
+
+private fun List<BookModel>.toTransport(): List<BookResponseObject>? = this
+    .map { it.toTransport() }
+    .toList()
+    .takeIf { it.isNotEmpty() }
+
+
