@@ -1,6 +1,6 @@
 plugins {
-    id("build-jvm")
-    alias(libs.plugins.openapi.generator)
+    alias { libs.plugins.kotlin.jvm }
+    alias { libs.plugins.openapi.generator }
 }
 
 sourceSets {
