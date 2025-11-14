@@ -12,7 +12,7 @@ data class BookModel(
     var dateStart: String? = null,
     var dateEnd: String? = null,
     var bookState: BookStateModel? = BookStateModel.PLANNED,
-    var lock: BookLockModel = BookLockModel.NONE
+    var lock: LockModel = LockModel.NONE
 ) {
     fun isEmpty() = this == NONE
 

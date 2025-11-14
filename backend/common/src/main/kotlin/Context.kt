@@ -5,6 +5,7 @@ import ru.ekataskin.booktracker.common.models.*
 
 data class Context(
     var command: CommandModel = CommandModel.NONE,
+    var id: BookIdModel = BookIdModel.NONE,
     var state: StateModel = StateModel.NONE,
     val errors: MutableList<ErrorModel> = mutableListOf(),
     var environment: EnvironmentModel = EnvironmentModel.PROD,

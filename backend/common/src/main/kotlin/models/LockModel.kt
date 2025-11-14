@@ -1,10 +1,10 @@
 package ru.ekataskin.booktracker.common.models
 
 @JvmInline
-value class BookLockModel(private val id: String) {
+value class LockModel(private val id: String) {
     fun asString() = id
 
     companion object {
-        val NONE = BookLockModel("")
+        val NONE = LockModel("")
     }
 }
