@@ -1,5 +1,5 @@
 package ru.ekataskin.booktracker.common.models
 
-data class BookFilter (
+data class BookFilterModel (
     var searchString: String = "",
 )

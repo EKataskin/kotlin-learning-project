@@ -308,7 +308,7 @@ components:
         - type: object
           description: Ответ с одним объектом книги
           properties:
-            ad:
+            book:
               $ref: '#/components/schemas/BookResponseObject'
 
     BookResponseMulti:
@@ -316,7 +316,7 @@ components:
         - type: object
           description: Список найденных объектов
           properties:
-            ads:
+            books:
               type: array
               items:
                 $ref: '#/components/schemas/BookResponseObject'

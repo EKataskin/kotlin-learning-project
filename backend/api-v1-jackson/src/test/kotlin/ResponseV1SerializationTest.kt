@@ -1,13 +1,16 @@
 package ru.ekataskin.booktracker.api.v1
 
-import ru.ekataskin.booktracker.api.v1.models.*
+import ru.ekataskin.booktracker.api.v1.models.BookCreateResponse
+import ru.ekataskin.booktracker.api.v1.models.BookResponseObject
+import ru.ekataskin.booktracker.api.v1.models.BookState
+import ru.ekataskin.booktracker.api.v1.models.IResponse
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class ResponseV1SerializationTest {
     private val response = BookCreateResponse(
-        ad = BookResponseObject(
+        book = BookResponseObject(
             author = "author name",
             title = "book title",
             year = 1999,

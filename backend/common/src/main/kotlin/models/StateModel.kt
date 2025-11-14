@@ -1,6 +1,6 @@
 package ru.ekataskin.booktracker.common.models
 
-enum class State {
+enum class StateModel {
     NONE,
     RUNNING,
     FAILING,

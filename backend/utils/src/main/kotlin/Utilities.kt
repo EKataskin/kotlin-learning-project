@@ -1,4 +1,4 @@
-package ru.ekataskin.utils
+package ru.ekataskin.boocktracker.utils
 
 import kotlinx.datetime.*
 import kotlinx.serialization.Serializable

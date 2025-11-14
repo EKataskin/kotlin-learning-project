@@ -1,6 +1,6 @@
 package ru.ekataskin.booktracker.common.models
 
-data class Error (
+data class ErrorModel (
     val code: String = "",
     val group: String = "",
     val field: String = "",

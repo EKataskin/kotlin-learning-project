@@ -1,7 +1,7 @@
 package ru.ekataskin.booktracker.common.models
 
-data class Book(
-    var id: BookId = BookId.NONE,
+data class BookModel(
+    var id: BookIdModel = BookIdModel.NONE,
     var author: String = "",
     var title: String = "",
     var series: String? = null,
@@ -11,12 +11,12 @@ data class Book(
     var notes: String? = null,
     var dateStart: String? = null,
     var dateEnd: String? = null,
-    var bookState: BookState? = BookState.PLANNED,
-    var lock: BookLock = BookLock.NONE
+    var bookState: BookStateModel? = BookStateModel.PLANNED,
+    var lock: BookLockModel = BookLockModel.NONE
 ) {
     fun isEmpty() = this == NONE
 
     companion object {
-        private val NONE = Book()
+        private val NONE = BookModel()
     }
 }

@@ -1,6 +1,6 @@
 package ru.ekataskin.booktracker.common.models
 
-enum class Stubs {
+enum class StubsModel {
     NONE,
     SUCCESS,
     NOT_FOUND,

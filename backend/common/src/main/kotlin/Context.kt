@@ -4,16 +4,16 @@ import kotlinx.datetime.Instant
 import ru.ekataskin.booktracker.common.models.*
 
 data class Context(
-    var command: Command = Command.NONE,
-    var state: State = State.NONE,
-    val errors: MutableList<Error> = mutableListOf(),
-    var environment: Environment = Environment.PROD,
-    var stubCase: Stubs = Stubs.NONE,
-    var requestId: RequestId = RequestId.NONE,
+    var command: CommandModel = CommandModel.NONE,
+    var state: StateModel = StateModel.NONE,
+    val errors: MutableList<ErrorModel> = mutableListOf(),
+    var environment: EnvironmentModel = EnvironmentModel.PROD,
+    var stubCase: StubsModel = StubsModel.NONE,
+    var requestId: RequestIdModel = RequestIdModel.NONE,
     var startTime: Instant = Instant.NONE,
 
-    var bookRequest: Book = Book(),
-    var bookFilterRequest: BookFilter = BookFilter(),
-    var bookResponse: Book = Book(),
-    var booksResponse: MutableList<Book> = mutableListOf(),
+    var bookRequest: BookModel = BookModel(),
+    var bookFilterRequest: BookFilterModel = BookFilterModel(),
+    var bookResponse: BookModel = BookModel(),
+    var booksResponse: MutableList<BookModel> = mutableListOf(),
 )
