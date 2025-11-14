@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.api.v1
+package ru.ekataskin.booktracker.api.v1
 
 import ru.ekataskin.booktracker.api.v1.models.*
 import kotlin.test.Test
