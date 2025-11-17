@@ -16,31 +16,31 @@ fun Context.toTransport(): IResponse = when (val cmd = command) {
 fun Context.toTransportCreate() = BookCreateResponse(
     book = bookResponse.toTransport(),
     result = state.toTransport(),
-    errors = errors.toTransport()
+    errors = errors.toTransportErrors()
 )
 
 fun Context.toTransportRead() = BookReadResponse(
     book = bookResponse.toTransport(),
     result = state.toTransport(),
-    errors = errors.toTransport()
+    errors = errors.toTransportErrors()
 )
 
 fun Context.toTransportUpdate() = BookUpdateResponse(
     book = bookResponse.toTransport(),
     result = state.toTransport(),
-    errors = errors.toTransport()
+    errors = errors.toTransportErrors()
 )
 
 fun Context.toTransportDelete() = BookDeleteResponse(
     book = bookResponse.toTransport(),
     result = state.toTransport(),
-    errors = errors.toTransport()
+    errors = errors.toTransportErrors()
 )
 
 fun Context.toTransportSearch() = BookSearchResponse(
     books = booksResponse.toTransport(),
     result = state.toTransport(),
-    errors = errors.toTransport()
+    errors = errors.toTransportErrors()
 )
 
 fun BookModel.toTransport(): BookResponseObject = BookResponseObject(
@@ -63,14 +63,14 @@ private fun StateModel.toTransport(): ResponseResult? = when (this) {
     StateModel.FINISHING -> ResponseResult.SUCCESS
 }
 
-private fun ErrorModel.toTransport() = ru.ekataskin.booktracker.api.v1.models.Error(
+private fun ErrorModel.toTransport() = Error(
     code = code.takeIf { it.isNotBlank() },
     group = group.takeIf { it.isNotBlank() },
     field = field.takeIf { it.isNotBlank() },
     message = message.takeIf { it.isNotBlank() }
 )
 
-private fun List<ErrorModel>.toTransport(): List<ru.ekataskin.booktracker.api.v1.models.Error>? = this
+private fun List<ErrorModel>.toTransportErrors(): List<Error>? = this
     .map { it.toTransport() }
     .toList()
     .takeIf { it.isNotEmpty() }
