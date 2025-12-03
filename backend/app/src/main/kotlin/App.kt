@@ -1,4 +1,4 @@
-package ru.ekataskin.app
+package ru.ekataskin.booktracker.app
 
 import ru.ekataskin.utils.Printer
 

@@ -4,13 +4,6 @@
 // https://docs.gradle.org/current/userguide/settings_file_basics.html
 
 pluginManagement {
-    includeBuild("../build-plugin")
-    plugins {
-        val kotlinVersion: String by settings
-        kotlin("jvm") version kotlinVersion
-        id("build-jvm") apply false
-        id("build-kmp") apply false
-    }
     repositories {
         mavenCentral()
         gradlePluginPortal()
@@ -37,3 +30,6 @@ rootProject.name = "backend"
 // Learn more about structuring projects with Gradle - https://docs.gradle.org/8.7/userguide/multi_project_builds.html
 include(":app")
 include(":utils")
+include(":common")
+include(":api-v1-jackson")
+include(":api-v1-mappers")
