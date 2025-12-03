@@ -4,6 +4,6 @@ plugins {
 
 dependencies {
     // Apply the kotlinx bundle of dependencies from the version catalog (`../../gradle/libs.versions.toml`).
-    implementation(libs.bundles.kotlinxEcosystem)
+    implementation(libs.bundles.kotlinx)
     testImplementation(kotlin("test-junit5"))
 }

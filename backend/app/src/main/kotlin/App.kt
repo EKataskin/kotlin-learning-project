@@ -1,15 +1,21 @@
 package ru.ekataskin.booktracker.app
 
-import ru.ekataskin.boocktracker.utils.Printer
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.boot.runApplication
+import org.springframework.context.event.EventListener
 
+@SpringBootApplication
+class App {
+    private val log = KotlinLogging.logger {}
 
-fun main() {
-    val name = "Kotlin"
-    val message = "Hello, $name!"
-    val printer = Printer(message)
-    printer.printMessage()
-
-    for (i in 1..5) {
-        println("i = $i")
+    @EventListener(ApplicationReadyEvent::class)
+    fun onApplicationReady() {
+        log.info { "Application is ready" }
     }
+}
+
+fun main(args: Array<String>) {
+    runApplication<App>(*args)
 }
