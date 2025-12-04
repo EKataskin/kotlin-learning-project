@@ -1,5 +1,7 @@
 package ru.ekataskin.booktracker.app.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import ru.ekataskin.booktracker.common.RequestV1Processor
@@ -14,4 +16,10 @@ class AppConfig {
 
     @Bean
     fun requestProcessor(domain: IDomain): IRequestProcessor = RequestV1Processor(domain)
+
+    companion object {
+        @Bean
+        @JvmStatic
+        fun objectMapper(): ObjectMapper = jacksonObjectMapper()
+    }
 }

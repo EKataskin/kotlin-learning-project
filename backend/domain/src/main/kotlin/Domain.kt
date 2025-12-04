@@ -6,8 +6,13 @@ import ru.ekataskin.booktracker.common.models.*
 
 class Domain : IDomain {
     override suspend fun exec(ctx: Context) {
-        ctx.bookResponse = BookModel.NONE
+        ctx.bookResponse = BookModel(
+            id = BookIdModel(1),
+            author = "Автор",
+            title = "Название",
+            url = "https://url.com",
+        )
         ctx.booksResponse = mutableListOf()
-        ctx.state = StateModel.RUNNING
+        ctx.state = StateModel.FINISHING
     }
 }

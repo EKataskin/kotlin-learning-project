@@ -43,7 +43,7 @@ suspend inline fun <reified Q : IRequest, reified S : IResponse> IRequestProcess
     request: Q,
     logId: String,
     log: KLogger
-): S = this.processRequest(
+): S = processRequest(
     { fromTransport(request) },
     { toTransport() as S },
     logId,

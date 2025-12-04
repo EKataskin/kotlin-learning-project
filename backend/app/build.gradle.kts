@@ -12,14 +12,16 @@ dependencies {
     // Project "app" depends on project "utils". (Project paths are separated with ":", so ":utils" refers to the top-level "utils" project.)
     implementation(project(":utils"))
     implementation(libs.bundles.logging)
+    implementation(libs.spring.web)
 
     implementation(libs.spring.actuator)
-    implementation(libs.spring.webflux)
-    implementation(libs.spring.webflux.ui)
     implementation(libs.jackson.kotlin)
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib"))
 
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.reactor)
+    implementation(libs.coroutines.reactive)
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.json)
 
@@ -42,4 +44,8 @@ application {
     // Define the Fully Qualified Name for the application main class
     // (Note that Kotlin compiles `App.kt` to a class with FQN `com.example.app.AppKt`.)
     mainClass = "ru.ekataskin.app.AppKt"
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
