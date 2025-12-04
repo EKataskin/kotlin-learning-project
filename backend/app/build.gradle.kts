@@ -25,6 +25,8 @@ dependencies {
 
     // Модели
     implementation(project(":common"))
+    // Доменная логика
+    implementation(project(":domain"))
 
     // v1 api
     implementation(project(":api-v1-jackson"))

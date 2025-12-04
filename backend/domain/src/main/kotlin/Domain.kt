@@ -1,3 +1,5 @@
+package ru.ekataskin.booktracker.domain
+
 import ru.ekataskin.booktracker.common.Context
 import ru.ekataskin.booktracker.common.interfaces.IDomain
 import ru.ekataskin.booktracker.common.models.*
