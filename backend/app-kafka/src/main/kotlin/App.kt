@@ -1,4 +1,4 @@
-package ru.ekataskin.booktracker.app
+package ru.ekataskin.booktracker.app.kafka
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -12,7 +12,7 @@ class App {
 
     @EventListener(ApplicationReadyEvent::class)
     fun onApplicationReady() {
-        log.info { "Application (spring) is ready" }
+        log.info { "Application (kafka) is ready" }
     }
 }
 
