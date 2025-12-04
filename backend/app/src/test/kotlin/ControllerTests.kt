@@ -11,8 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import ru.ekataskin.booktracker.api.v1.models.BookCreateObject
 import ru.ekataskin.booktracker.api.v1.models.BookCreateRequest
+import ru.ekataskin.booktracker.stubs.Stubs
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -25,13 +25,7 @@ class ControllerTests {
 
     @Test
     fun `create book returns response`() {
-        val request = BookCreateRequest(
-            book = BookCreateObject(
-                author = "Александр Пушкин",
-                title = "Евгений Онегин",
-                url = "https://ru.wikipedia.org/wiki/Евгений_Онегин",
-            )
-        )
+        val request = BookCreateRequest(book = Stubs.BOOK_CREATE_OBJECT1)
 
         val mvcResult = mockMvc.perform(
             post("/api/v1/create")

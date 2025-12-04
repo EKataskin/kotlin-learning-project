@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     implementation(project(":common"))
-    implementation(project(":stubs"))
+    implementation(project(":api-v1-jackson"))
 }

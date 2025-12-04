@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(project(":stubs"))
     // Модели
     implementation(project(":common"))
     // Доменная логика
