@@ -1,6 +1,7 @@
 application:
   kafka:
     topic: booktracker.events
+    response-topic: booktracker.response
 
 spring:
   output:
