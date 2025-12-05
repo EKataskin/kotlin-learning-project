@@ -8,8 +8,6 @@ spring:
       enabled: always
   kafka:
     client-id: ${spring.application.name}
-    listener:
-      ack-mode: manual
     bootstrap-servers: localhost:9095
     consumer:
       group-id: booktracker-group
