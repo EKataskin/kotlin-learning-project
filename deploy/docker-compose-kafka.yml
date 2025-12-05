@@ -1,7 +1,6 @@
 version: "3.8"
 name: booktracker
 services:
-
   kafka:
     container_name: booktracker-kafka
     image: bitnami/kafka:4.0.0
@@ -32,3 +31,10 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
     ports:
       - "8083:8080"
+
+  app:
+    image: ru.ekataskin.booktracker/app-kafka:0.0.1
+    depends_on:
+      - kafka
+    links:
+      - kafka

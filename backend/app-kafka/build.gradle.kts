@@ -1,11 +1,12 @@
 plugins {
+    application // Apply the Application plugin to add support for building an executable JVM application.
     alias { libs.plugins.kotlin.jvm }
     alias { libs.plugins.spring.boot }
     alias { libs.plugins.spring.dependencies }
     alias { libs.plugins.spring.kotlin }
     alias { libs.plugins.kotlinx.serialization }
-    // Apply the Application plugin to add support for building an executable JVM application.
-    application
+    alias { libs.plugins.shadowJar }
+    alias { libs.plugins.muschko.java }
 }
 
 dependencies {
@@ -49,4 +50,17 @@ application {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+// Отключаем создание -plain.jar
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}
+
+tasks {
+    shadowJar {
+        manifest {
+            attributes(mapOf("Main-Class" to application.mainClass.get()))
+        }
+    }
 }
