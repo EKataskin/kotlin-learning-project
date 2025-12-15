@@ -1,3 +1,6 @@
+package ru.ekataskin.booktracker.stubs
+
+import ru.ekataskin.booktracker.api.v1.models.BookCreateObject
 import ru.ekataskin.booktracker.common.models.BookIdModel
 import ru.ekataskin.booktracker.common.models.BookModel
 
@@ -9,6 +12,12 @@ object Stubs {
     )
     val BOOK1 = BookModel(
         id = BookIdModel(37),
+        author = "Александр Пушкин",
+        title = "Евгений Онегин",
+        url = "https://ru.wikipedia.org/wiki/Евгений_Онегин",
+    )
+
+    val BOOK_CREATE_OBJECT1 = BookCreateObject(
         author = "Александр Пушкин",
         title = "Евгений Онегин",
         url = "https://ru.wikipedia.org/wiki/Евгений_Онегин",

@@ -3,6 +3,7 @@ import ru.ekataskin.booktracker.api.v1.models.*
 import ru.ekataskin.booktracker.common.Context
 import ru.ekataskin.booktracker.common.models.*
 import ru.ekataskin.booktracker.mappers.*
+import ru.ekataskin.booktracker.stubs.Stubs
 import kotlin.test.assertEquals
 
 class MapperTest {

@@ -1,0 +1,17 @@
+application:
+  kafka:
+    topic: booktracker.events
+    response-topic: booktracker.response
+
+spring:
+  output:
+    ansi:
+      enabled: always
+  kafka:
+    client-id: ${spring.application.name}
+    bootstrap-servers: localhost:9095
+    consumer:
+      group-id: booktracker-group
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      isolation-level: read_committed

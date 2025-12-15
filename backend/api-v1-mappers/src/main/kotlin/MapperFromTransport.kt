@@ -4,6 +4,15 @@ import ru.ekataskin.booktracker.api.v1.models.*
 import ru.ekataskin.booktracker.common.Context
 import ru.ekataskin.booktracker.common.models.*
 
+fun Context.fromTransport(request: IRequest) = when (request) {
+    is BookCreateRequest -> fromTransport(request)
+    is BookReadRequest -> fromTransport(request)
+    is BookUpdateRequest -> fromTransport(request)
+    is BookDeleteRequest -> fromTransport(request)
+    is BookSearchRequest -> fromTransport(request)
+    else -> throw Exception("Unknown request class ${request.javaClass}")
+}
+
 fun Context.fromTransport(request: BookCreateRequest) {
     command = CommandModel.CREATE
     environment = request.mode.toModel()

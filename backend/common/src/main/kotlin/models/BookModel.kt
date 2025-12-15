@@ -17,6 +17,6 @@ data class BookModel(
     fun isEmpty() = this == NONE
 
     companion object {
-        private val NONE = BookModel()
+        public val NONE = BookModel()
     }
 }
