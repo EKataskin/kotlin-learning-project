@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.bundles.logging)
     implementation(project(":common"))
     implementation(project(":stubs"))
 }
