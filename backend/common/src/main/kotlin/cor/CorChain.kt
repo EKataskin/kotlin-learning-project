@@ -21,7 +21,7 @@ class CorChain<T>(
 }
 
 @CorDslMarker
-class CorChainDsl<T>() : CorExecDsl<T>(), ICorChainDsl<T> {
+class CorChainDsl<T> : CorExecDsl<T>(), ICorChainDsl<T> {
 
     private val workers = mutableListOf<ICorExecDsl<T>>()
 
