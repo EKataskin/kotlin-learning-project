@@ -3,7 +3,7 @@ package ru.ekataskin.utils
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.serialization.json.Json
-import ru.ekataskin.boocktracker.utils.Printer
+import ru.ekataskin.booktracker.utils.Printer
 
 internal class PrinterTest {
 

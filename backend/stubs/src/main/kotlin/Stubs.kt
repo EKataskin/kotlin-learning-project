@@ -10,12 +10,14 @@ object Stubs {
         title = "Евгений Онегин",
         url = "https://ru.wikipedia.org/wiki/Евгений_Онегин",
     )
+
     val BOOK1 = BookModel(
         id = BookIdModel(37),
         author = "Александр Пушкин",
         title = "Евгений Онегин",
         url = "https://ru.wikipedia.org/wiki/Евгений_Онегин",
     )
+
     val BOOK2 = BookModel(
         id = BookIdModel(42),
         author = "Михаил Лермонтов",
