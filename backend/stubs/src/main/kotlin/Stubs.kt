@@ -16,6 +16,12 @@ object Stubs {
         title = "Евгений Онегин",
         url = "https://ru.wikipedia.org/wiki/Евгений_Онегин",
     )
+    val BOOK2 = BookModel(
+        id = BookIdModel(42),
+        author = "Михаил Лермонтов",
+        title = "Герой нашего времени",
+        url = "https://ru.wikipedia.org/wiki/Герой_нашего_времени",
+    )
 
     val BOOK_CREATE_OBJECT1 = BookCreateObject(
         author = "Александр Пушкин",
