@@ -45,7 +45,6 @@ fun <T> ICorChainDsl<T>.worker(function: ICorWorkerDsl<T>.() -> Unit) {
     add(CorWorkerDsl<T>().apply(function))
 }
 
-
 /**
  * Создает рабочего с on и except по умолчанию
  */

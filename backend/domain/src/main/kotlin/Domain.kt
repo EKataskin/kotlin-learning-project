@@ -25,6 +25,39 @@ class Domain : IDomain {
             stubCreateSuccess("Имитация успешной обработки")
             stubBadAuthor("Имитация ошибки в поле author")
             stubBadTitle("Имитация ошибки в поле title")
+            stubBadUrl("Имитация ошибки в поле url")
+            stubUnknownCase("Ошибка: неизвестный кейс")
+        }
+
+        operation("Получение книги", CommandModel.READ) {
+            stubReadSuccess("Имитация успешной обработки")
+            stubBadId("Имитация ошибки в поле id")
+            stubNotFound("Имитация ошибки: книга не найдена")
+            stubUnknownCase("Ошибка: неизвестный кейс")
+        }
+
+        operation("Изменение книги", CommandModel.UPDATE) {
+            stubUpdateSuccess("Имитация успешной обработки")
+            stubBadId("Имитация ошибки в поле id")
+            stubBadAuthor("Имитация ошибки в поле author")
+            stubBadTitle("Имитация ошибки в поле title")
+            stubBadUrl("Имитация ошибки в поле url")
+            stubNotFound("Имитация ошибки: книга не найдена")
+            stubUnknownCase("Ошибка: неизвестный кейс")
+        }
+
+        operation("Удаление книги", CommandModel.DELETE) {
+            stubDeleteSuccess("Имитация успешной обработки")
+            stubBadId("Имитация ошибки в поле id")
+            stubNotFound("Имитация ошибки: книга не найдена")
+            stubUnknownCase("Ошибка: неизвестный кейс")
+        }
+
+        operation("Поиск книг", CommandModel.SEARCH) {
+            stubSearchSuccess("Имитация успешной обработки")
+            stubBadAuthor("Имитация ошибки в поле author")
+            stubBadTitle("Имитация ошибки в поле title")
+            stubUnknownCase("Ошибка: неизвестный кейс")
         }
 
     }.build()
