@@ -71,8 +71,8 @@ fun ICorChainDsl<Context>.validateSeriesPair(title: String) = worker {
     this.description = "Проверка что поля series и seriesNumber одновременно заполнены или одновременно пусты"
     on {
         state == StateModel.RUNNING &&
-            (bookRequest.series?.isBlank() == true && bookRequest.seriesNumber != null) ||
-            (bookRequest.series?.isBlank() == false && bookRequest.seriesNumber == null)
+            (bookRequest.series.isNullOrBlank() && bookRequest.seriesNumber != null) ||
+            (!bookRequest.series.isNullOrBlank() && bookRequest.seriesNumber == null)
     }
     handle {
         errors.add(
@@ -206,7 +206,7 @@ fun ICorChainDsl<Context>.validateDates(title: String) = worker {
             ErrorModel(
                 group = "validation",
                 code = "invalid",
-                field = "dateEnd/dateStart",
+                field = "dateStart/dateEnd",
                 message = "Field dateEnd must be greater than or equal to dateStart"
             )
         )
