@@ -4,9 +4,9 @@ import ru.ekataskin.booktracker.common.Context
 import ru.ekataskin.booktracker.common.cor.ICorChainDsl
 import ru.ekataskin.booktracker.common.cor.worker
 import ru.ekataskin.booktracker.common.models.BookIdModel
-import ru.ekataskin.booktracker.common.models.BookStateModel
 import ru.ekataskin.booktracker.common.models.ErrorModel
 import ru.ekataskin.booktracker.common.models.StateModel
+import java.util.regex.Pattern
 
 fun ICorChainDsl<Context>.collectValidationErrors(title: String) = worker {
     this.title = title
@@ -37,12 +37,12 @@ fun ICorChainDsl<Context>.validateAuthor(title: String) = worker {
     this.title = title
     this.description = "Проверка что поле author не пустое и содержит буквы"
     val regExp = Regex("\\p{L}")
-    on { state == StateModel.RUNNING && bookRequest.author.isBlank() && !bookRequest.author.contains(regExp) }
+    on { state == StateModel.RUNNING && (bookRequest.author.isBlank() || !bookRequest.author.contains(regExp)) }
     handle {
         errors.add(
             ErrorModel(
                 group = "validation",
-                code = "empty",
+                code = if(bookRequest.author.isBlank()) "empty" else "invalid",
                 field = "author",
                 message = "Field author must not be empty and must contain letters"
             )
@@ -53,12 +53,12 @@ fun ICorChainDsl<Context>.validateAuthor(title: String) = worker {
 fun ICorChainDsl<Context>.validateTitle(title: String) = worker {
     this.title = title
     this.description = "Проверка что поле title не пустое и содержит что-то осмысленное"
-    on { state == StateModel.RUNNING && bookRequest.title.isBlank() && !bookRequest.title.validateContent() }
+    on { state == StateModel.RUNNING && (bookRequest.title.isBlank() || !bookRequest.title.validateContent()) }
     handle {
         errors.add(
             ErrorModel(
                 group = "validation",
-                code = "empty",
+                code = if(bookRequest.title.isBlank()) "empty" else "invalid",
                 field = "title",
                 message = "Field title must not be empty and must contain text"
             )
@@ -138,8 +138,14 @@ fun ICorChainDsl<Context>.validateYear(title: String) = worker {
 fun ICorChainDsl<Context>.validateUrl(title: String) = worker {
     this.title = title
     this.description = "Проверка что поле url пустое или содержит валидный URL-адрес"
-    val urlRegex = Regex("^(https?://)?([\\w.-]+)\\.([a-z]{2,6})([/\\w .-]*)*/?\$")
-    on { state == StateModel.RUNNING && bookRequest.url?.isNotBlank() == true && !bookRequest.url!!.matches(urlRegex) }
+    val urlRegex = Pattern.compile(
+        "^(https?://)?" +
+            "([\\p{IsCyrillic}\\p{IsLatin}\\d\\-.]+\\.)+" +
+            "([a-z]{2,63}|\\p{IsCyrillic}+)" +
+            "(/?[\\p{IsCyrillic}\\p{IsLatin}\\d\\-._~!$&'()*+,;=:@%]*)*" +
+            "(\\#.*)?$", Pattern.CASE_INSENSITIVE or Pattern.UNICODE_CHARACTER_CLASS
+    )
+    on { state == StateModel.RUNNING && !bookRequest.url.isNullOrBlank() && !urlRegex.matcher(bookRequest.url).matches() }
     handle {
         errors.add(
             ErrorModel(
