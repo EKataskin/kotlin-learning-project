@@ -38,6 +38,7 @@ class Domain : IDomain {
             validateDateStart("Валидация поля dateStart")
             validateDateEnd("Валидация поля dateEnd")
             validateDates("Валидация порядка dateStart и dateEnd")
+            collectValidationErrors("Сбор ошибок валидации")
         }
 
         operation("Получение книги", CommandModel.READ) {
@@ -47,6 +48,7 @@ class Domain : IDomain {
             stubUnknownCase("Ошибка: неизвестный кейс")
 
             validateId("Валидация поля id")
+            collectValidationErrors("Сбор ошибок валидации")
         }
 
         operation("Изменение книги", CommandModel.UPDATE) {
@@ -69,6 +71,7 @@ class Domain : IDomain {
             validateDateStart("Валидация поля dateStart")
             validateDateEnd("Валидация поля dateEnd")
             validateDates("Валидация порядка dateStart и dateEnd")
+            collectValidationErrors("Сбор ошибок валидации")
         }
 
         operation("Удаление книги", CommandModel.DELETE) {
@@ -78,6 +81,7 @@ class Domain : IDomain {
             stubUnknownCase("Ошибка: неизвестный кейс")
 
             validateId("Валидация поля id")
+            collectValidationErrors("Сбор ошибок валидации")
         }
 
         operation("Поиск книг", CommandModel.SEARCH) {
