@@ -8,12 +8,20 @@ import ru.ekataskin.booktracker.common.models.BookStateModel
 import ru.ekataskin.booktracker.common.models.ErrorModel
 import ru.ekataskin.booktracker.common.models.StateModel
 
+fun ICorChainDsl<Context>.collectValidationErrors(title: String) = worker {
+    this.title = title
+    this.description = "Переводит состояние контекста в FAILING, если были накоплены ошибки"
+    on { state == StateModel.RUNNING && errors.isNotEmpty() }
+    handle {
+        state = StateModel.FAILING
+    }
+}
+
 fun ICorChainDsl<Context>.validateId(title: String) = worker {
     this.title = title
     this.description = "Проверка что поле id содержит валидный идентификатор"
     on { state == StateModel.RUNNING && bookRequest.id != BookIdModel.NONE }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -31,7 +39,6 @@ fun ICorChainDsl<Context>.validateAuthor(title: String) = worker {
     val regExp = Regex("\\p{L}")
     on { state == StateModel.RUNNING && bookRequest.author.isBlank() && !bookRequest.author.contains(regExp) }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -48,7 +55,6 @@ fun ICorChainDsl<Context>.validateTitle(title: String) = worker {
     this.description = "Проверка что поле title не пустое и содержит что-то осмысленное"
     on { state == StateModel.RUNNING && bookRequest.title.isBlank() && !bookRequest.title.validateContent() }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -69,7 +75,6 @@ fun ICorChainDsl<Context>.validateSeriesPair(title: String) = worker {
             (bookRequest.series?.isBlank() == false && bookRequest.seriesNumber == null)
     }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -86,7 +91,6 @@ fun ICorChainDsl<Context>.validateSeries(title: String) = worker {
     this.description = "Проверка что поле series пустое или содержит что-то осмысленное"
     on { state == StateModel.RUNNING && !bookRequest.series.isNullOrBlank() && !bookRequest.series!!.validateContent() }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -103,7 +107,6 @@ fun ICorChainDsl<Context>.validateSeriesNumber(title: String) = worker {
     this.description = "Проверка что поле seriesNumber содержит положительное целое число"
     on { state == StateModel.RUNNING && bookRequest.seriesNumber != null && bookRequest.seriesNumber!! <= 0 }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -121,7 +124,6 @@ fun ICorChainDsl<Context>.validateYear(title: String) = worker {
     val currentYear = java.time.LocalDate.now().year
     on { state == StateModel.RUNNING && (bookRequest.year != null && (bookRequest.year!! !in 0..currentYear)) }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -139,7 +141,6 @@ fun ICorChainDsl<Context>.validateUrl(title: String) = worker {
     val urlRegex = Regex("^(https?://)?([\\w.-]+)\\.([a-z]{2,6})([/\\w .-]*)*/?\$")
     on { state == StateModel.RUNNING && bookRequest.url?.isNotBlank() == true && !bookRequest.url!!.matches(urlRegex) }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -157,7 +158,6 @@ fun ICorChainDsl<Context>.validateDateStart(title: String) = worker {
     val dateRegex = Regex("^\\d{4}-\\d{2}-\\d{2}\$")
     on { state == StateModel.RUNNING && !bookRequest.dateStart.isNullOrBlank() && !bookRequest.dateStart!!.matches(dateRegex) }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -175,7 +175,6 @@ fun ICorChainDsl<Context>.validateDateEnd(title: String) = worker {
     val dateRegex = Regex("^\\d{4}-\\d{2}-\\d{2}\$")
     on { state == StateModel.RUNNING && !bookRequest.dateEnd.isNullOrBlank() && !bookRequest.dateEnd!!.matches(dateRegex) }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
@@ -197,7 +196,6 @@ fun ICorChainDsl<Context>.validateDates(title: String) = worker {
             bookRequest.dateEnd!! < bookRequest.dateStart!!
     }
     handle {
-        state = StateModel.FAILING
         errors.add(
             ErrorModel(
                 group = "validation",
