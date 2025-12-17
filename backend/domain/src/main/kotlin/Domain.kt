@@ -27,6 +27,17 @@ class Domain : IDomain {
             stubBadTitle("Имитация ошибки в поле title")
             stubBadUrl("Имитация ошибки в поле url")
             stubUnknownCase("Ошибка: неизвестный кейс")
+
+            validateAuthor("Валидация поля author")
+            validateTitle("Валидация поля title")
+            validateSeriesPair("Валидация пары series + seriesNumber")
+            validateSeries("Валидация поля series")
+            validateSeriesNumber("Валидация поля seriesNumber")
+            validateYear("Валидация поля year")
+            validateUrl("Валидация поля url")
+            validateDateStart("Валидация поля dateStart")
+            validateDateEnd("Валидация поля dateEnd")
+            validateDates("Валидация порядка dateStart и dateEnd")
         }
 
         operation("Получение книги", CommandModel.READ) {
@@ -34,6 +45,8 @@ class Domain : IDomain {
             stubBadId("Имитация ошибки в поле id")
             stubNotFound("Имитация ошибки: книга не найдена")
             stubUnknownCase("Ошибка: неизвестный кейс")
+
+            validateId("Валидация поля id")
         }
 
         operation("Изменение книги", CommandModel.UPDATE) {
@@ -44,6 +57,18 @@ class Domain : IDomain {
             stubBadUrl("Имитация ошибки в поле url")
             stubNotFound("Имитация ошибки: книга не найдена")
             stubUnknownCase("Ошибка: неизвестный кейс")
+
+            validateId("Валидация поля id")
+            validateAuthor("Валидация поля author")
+            validateTitle("Валидация поля title")
+            validateSeriesPair("Валидация пары series + seriesNumber")
+            validateSeries("Валидация поля series")
+            validateSeriesNumber("Валидация поля seriesNumber")
+            validateYear("Валидация поля year")
+            validateUrl("Валидация поля url")
+            validateDateStart("Валидация поля dateStart")
+            validateDateEnd("Валидация поля dateEnd")
+            validateDates("Валидация порядка dateStart и dateEnd")
         }
 
         operation("Удаление книги", CommandModel.DELETE) {
@@ -51,6 +76,8 @@ class Domain : IDomain {
             stubBadId("Имитация ошибки в поле id")
             stubNotFound("Имитация ошибки: книга не найдена")
             stubUnknownCase("Ошибка: неизвестный кейс")
+
+            validateId("Валидация поля id")
         }
 
         operation("Поиск книг", CommandModel.SEARCH) {
@@ -58,6 +85,8 @@ class Domain : IDomain {
             stubBadAuthor("Имитация ошибки в поле author")
             stubBadTitle("Имитация ошибки в поле title")
             stubUnknownCase("Ошибка: неизвестный кейс")
+
+            validateSearchString("Валидация поисковой строки")
         }
 
     }.build()
