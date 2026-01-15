@@ -19,13 +19,11 @@ class BookRepoInMemory(
         .expireAfterWrite(ttl)
         .build()
 
-
     override suspend fun createBook(rq: DbBookRequest): IDbBookResponse = trySingleMethod {
-        val id = idSequence.incrementAndGet()
-        val book = rq.book.copy(id = BookIdModel(id), lock = getNewLock())
+        val book = rq.book.copy(id = getNewId(), lock = getNewLock())
         val entity = BookEntity(book)
         mutex.withLock {
-            cache.put(id, entity)
+            cache.put(book.id.value(), entity)
         }
         DbBookResponse(book)
     }
@@ -100,6 +98,8 @@ class BookRepoInMemory(
             .toList()
         DbBooksResponse(result)
     } as IDbBooksResponse
+
+    private fun getNewId(): BookIdModel = BookIdModel(idSequence.incrementAndGet())
 
     private fun getNewLock(): LockModel = LockModel(NanoId.generate())
 }
