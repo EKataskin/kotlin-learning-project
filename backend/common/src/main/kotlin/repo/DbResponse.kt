@@ -12,7 +12,7 @@ data class DbBookResponse(
 
 data class DbBooksResponse(
     val data: List<BookModel>
-): IDbBookResponse
+): IDbBooksResponse
 
 data class DbErrorResponse(
     val errors: List<ErrorModel> = emptyList()
