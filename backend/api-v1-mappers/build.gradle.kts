@@ -8,5 +8,5 @@ dependencies {
     implementation(project(":api-v1-jackson"))
     implementation(project(":stubs"))
 
-    testImplementation(kotlin("test-junit"))
+    testImplementation(kotlin("test-junit5"))
 }
