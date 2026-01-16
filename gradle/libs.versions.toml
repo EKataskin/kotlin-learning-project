@@ -52,6 +52,7 @@ kotest-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kote
 kotest-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version = "5.2.1" }
+junit5 = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.2" }
 
 # Databases
 db-cache4k = "io.github.reactivecircus.cache4k:cache4k:0.14.0"

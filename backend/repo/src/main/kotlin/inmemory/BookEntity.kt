@@ -31,7 +31,7 @@ data class BookEntity(
         dateStart = book.dateStart,
         dateEnd = book.dateEnd,
         bookState = book.bookState?.name,
-        lock = book.lock.asString().takeIf { it.isNotBlank() }
+        lock = book.lock.value().takeIf { it.isNotBlank() }
     )
 
     fun toModel() = BookModel(

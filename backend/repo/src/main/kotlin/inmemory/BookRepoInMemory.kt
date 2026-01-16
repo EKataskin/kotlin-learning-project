@@ -1,10 +1,13 @@
 package inmemory
 
+import common.IBookRepoInitializable
 import io.github.reactivecircus.cache4k.Cache
 import io.viascom.nanoid.NanoId
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import ru.ekataskin.booktracker.common.models.*
+import ru.ekataskin.booktracker.common.models.BookIdModel
+import ru.ekataskin.booktracker.common.models.BookModel
+import ru.ekataskin.booktracker.common.models.LockModel
 import ru.ekataskin.booktracker.common.repo.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.time.Duration
@@ -12,7 +15,7 @@ import kotlin.time.Duration.Companion.minutes
 
 class BookRepoInMemory(
     ttl: Duration = 10.minutes
-) : BookRepoBase(), IBookRepo {
+) : BookRepoBase(), IBookRepo, IBookRepoInitializable {
     private val idSequence: AtomicInteger = AtomicInteger(0)
     private val mutex: Mutex = Mutex()
     private val cache = Cache.Builder<Int, BookEntity>()
@@ -102,4 +105,11 @@ class BookRepoInMemory(
     private fun getNewId(): BookIdModel = BookIdModel(idSequence.incrementAndGet())
 
     private fun getNewLock(): LockModel = LockModel(NanoId.generate())
+
+    override fun save(items: Collection<BookModel>): Collection<BookModel> = items.map { item ->
+        val entity = BookEntity(item)
+        val key = requireNotNull(entity.id)
+        cache.put(key, entity)
+        item
+    }
 }
