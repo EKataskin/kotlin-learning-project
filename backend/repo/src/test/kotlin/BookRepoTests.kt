@@ -3,17 +3,15 @@ import org.junit.jupiter.api.Test
 import ru.ekataskin.booktracker.common.models.BookIdModel
 import ru.ekataskin.booktracker.common.models.BookModel
 import ru.ekataskin.booktracker.common.models.BookStateModel
+import ru.ekataskin.booktracker.common.repo.DbBookIdRequest
 import ru.ekataskin.booktracker.common.repo.DbBookRequest
 import ru.ekataskin.booktracker.common.repo.DbBookResponse
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertIs
-import kotlin.test.assertNotEquals
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import ru.ekataskin.booktracker.common.repo.DbErrorResponse
+import ru.ekataskin.booktracker.common.repo.IBookRepo
+import kotlin.test.*
 
 abstract class BookRepoCreateTest {
-    abstract val repo: IBookRepoInitializable
+    abstract val repo: IBookRepo
 
     private val book = BookModel(
         title = "New Book",
@@ -39,5 +37,43 @@ abstract class BookRepoCreateTest {
         assertNull(result.data.dateStart)
         assertNull(result.data.dateEnd)
         assertEquals(result.data.bookState, BookStateModel.PLANNED)
+    }
+}
+
+open class BookRepoReadTest(
+    val repo: IBookRepoInitializable
+) {
+    val repoItems: List<BookModel>
+    val itemReadSuccess: BookModel
+
+    init {
+        repoItems = repo.save(
+            listOf(
+                createTestModel("read1"),
+            )
+        ).toList()
+        itemReadSuccess = repoItems[0]
+    }
+
+    @Test
+    fun readSuccess() = runRepoTest {
+        val result = repo.readBook(DbBookIdRequest(itemReadSuccess.id))
+
+        assertIs<DbBookResponse>(result)
+        assertEquals(result.data, itemReadSuccess)
+    }
+
+    @Test
+    fun readNotFound() = runRepoTest {
+        val result = repo.readBook(DbBookIdRequest(BookIdModel(WRONG_ID)))
+
+        assertIs<DbErrorResponse>(result)
+        val error = result.errors.firstOrNull { e -> e.code == "repo-not-found" }
+        assertNotNull(error)
+        assertEquals(error.field, "id")
+    }
+
+    companion object{
+        const val WRONG_ID: Int = Int.MIN_VALUE
     }
 }

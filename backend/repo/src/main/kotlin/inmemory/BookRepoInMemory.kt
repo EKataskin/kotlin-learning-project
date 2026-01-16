@@ -102,14 +102,20 @@ class BookRepoInMemory(
         DbBooksResponse(result)
     } as IDbBooksResponse
 
+    override fun save(items: Collection<BookModel>): Collection<BookModel> = items.map { book ->
+        if( book.id == BookIdModel.NONE ) {
+            book.id = getNewId()
+        }
+        if( book.lock == LockModel.NONE ){
+            book.lock = getNewLock()
+        }
+        val entity = BookEntity(book)
+        val key = requireNotNull(entity.id)
+        cache.put(key, entity)
+        book
+    }
+
     private fun getNewId(): BookIdModel = BookIdModel(idSequence.incrementAndGet())
 
     private fun getNewLock(): LockModel = LockModel(NanoId.generate())
-
-    override fun save(items: Collection<BookModel>): Collection<BookModel> = items.map { item ->
-        val entity = BookEntity(item)
-        val key = requireNotNull(entity.id)
-        cache.put(key, entity)
-        item
-    }
 }
