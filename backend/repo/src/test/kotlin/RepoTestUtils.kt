@@ -2,6 +2,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
+import ru.ekataskin.booktracker.common.models.BookIdModel
 import ru.ekataskin.booktracker.common.models.BookModel
 import kotlin.time.Duration.Companion.minutes
 
@@ -17,3 +18,7 @@ fun createTestModel(tag: String): BookModel = BookModel(
     notes = tag,
     year = 2000 + tag.length
 )
+
+const val WRONG_ID: Int = Int.MIN_VALUE
+
+val notFoundId = BookIdModel(WRONG_ID)

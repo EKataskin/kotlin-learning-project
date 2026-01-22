@@ -3,16 +3,13 @@ import org.junit.jupiter.api.Test
 import ru.ekataskin.booktracker.common.models.BookIdModel
 import ru.ekataskin.booktracker.common.models.BookModel
 import ru.ekataskin.booktracker.common.models.BookStateModel
-import ru.ekataskin.booktracker.common.repo.DbBookIdRequest
-import ru.ekataskin.booktracker.common.repo.DbBookRequest
-import ru.ekataskin.booktracker.common.repo.DbBookResponse
-import ru.ekataskin.booktracker.common.repo.DbErrorResponse
-import ru.ekataskin.booktracker.common.repo.IBookRepo
+import ru.ekataskin.booktracker.common.models.LockModel
+import ru.ekataskin.booktracker.common.repo.*
 import kotlin.test.*
 
-abstract class BookRepoCreateTest {
-    abstract val repo: IBookRepo
-
+open class BookRepoCreateTest(
+    val repo: IBookRepo
+) {
     private val book = BookModel(
         title = "New Book",
         author = "Author Name",
@@ -65,7 +62,59 @@ open class BookRepoReadTest(
 
     @Test
     fun readNotFound() = runRepoTest {
-        val result = repo.readBook(DbBookIdRequest(BookIdModel(WRONG_ID)))
+        val result = repo.readBook(DbBookIdRequest(notFoundId))
+
+        assertIs<DbErrorResponse>(result)
+        val error = result.errors.firstOrNull { e -> e.code == "repo-not-found" }
+        assertNotNull(error)
+        assertEquals(error.field, "id")
+    }
+}
+
+open class BookRepoUpdateTest(
+    val repo: IBookRepoInitializable
+) {
+    val repoItems: List<BookModel>
+    val itemUpdateSuccess: BookModel
+
+    init {
+        repoItems = repo.save(
+            listOf(
+                createTestModel("update1"),
+            )
+        ).toList()
+        itemUpdateSuccess = repoItems[0]
+    }
+
+    @Test
+    fun updateSuccess() = runRepoTest {
+        val updatedTitle = "Changed title"
+        val updatedNotes = "Changed notes"
+        val updatedDateEnd = "2025-12-31"
+        val bookToUpdate = itemUpdateSuccess.copy(
+            title = updatedTitle,
+            notes = updatedNotes,
+            dateEnd = updatedDateEnd,
+        )
+
+        val result = repo.updateBook(DbBookRequest(bookToUpdate))
+
+        assertIs<DbBookResponse>(result)
+        assertEquals(result.data.id, itemUpdateSuccess.id)
+        assertEquals(result.data.title, updatedTitle)
+        assertEquals(result.data.notes, updatedNotes)
+        assertEquals(result.data.dateEnd, updatedDateEnd)
+        assertNotEquals(result.data.lock, itemUpdateSuccess.lock)
+    }
+
+    @Test
+    fun updateNotFound() = runRepoTest {
+        val bookToUpdate = createTestModel("update-not-found").apply {
+            id = notFoundId
+            lock = itemUpdateSuccess.lock
+        }
+
+        val result = repo.updateBook(DbBookRequest(bookToUpdate))
 
         assertIs<DbErrorResponse>(result)
         val error = result.errors.firstOrNull { e -> e.code == "repo-not-found" }
@@ -73,7 +122,18 @@ open class BookRepoReadTest(
         assertEquals(error.field, "id")
     }
 
-    companion object{
-        const val WRONG_ID: Int = Int.MIN_VALUE
+    @Test
+    fun updateConcurrencyError() = runRepoTest {
+        val bookToUpdate = itemUpdateSuccess.copy(
+            title = "Changed title with bad lock",
+            lock = LockModel("bad-lock-value")
+        )
+
+        val result = repo.updateBook(DbBookRequest(bookToUpdate))
+
+        assertIs<DbErrorResponse>(result)
+        val error = result.errors.firstOrNull { e -> e.code == "repo-concurrency" }
+        assertNotNull(error)
+        assertEquals(error.field, "lock")
     }
 }

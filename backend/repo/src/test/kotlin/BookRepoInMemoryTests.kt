@@ -3,12 +3,17 @@ import org.junit.jupiter.api.Nested
 
 class BookRepoInMemoryTests {
     @Nested
-    inner class BookRepoInMemoryCreateTest : BookRepoCreateTest() {
-        override val repo = BookRepoInMemory()
-    }
+    inner class BookRepoInMemoryCreateTest : BookRepoCreateTest(
+        repo = BookRepoInMemory()
+    )
 
     @Nested
     inner class BookRepoInMemoryReadTest : BookRepoReadTest(
+        repo = BookRepoInMemory()
+    )
+
+    @Nested
+    inner class BookRepoInMemoryUpdateTest : BookRepoUpdateTest(
         repo = BookRepoInMemory()
     )
 }
