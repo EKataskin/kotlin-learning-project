@@ -137,3 +137,62 @@ open class BookRepoUpdateTest(
         assertEquals(error.field, "lock")
     }
 }
+
+open class BookRepoDeleteTest(
+    val repo: IBookRepoInitializable
+) {
+    val repoItems: List<BookModel>
+    val itemDeleteSuccess: BookModel
+
+    init {
+        repoItems = repo.save(
+            listOf(
+                createTestModel("delete1"),
+            )
+        ).toList()
+        itemDeleteSuccess = repoItems[0]
+    }
+
+    @Test
+    fun deleteSuccess() = runRepoTest {
+        val result = repo.deleteBook(
+            DbBookIdRequest(
+                id = itemDeleteSuccess.id,
+                lock = itemDeleteSuccess.lock
+            )
+        )
+
+        assertIs<DbBookResponse>(result)
+        assertEquals(result.data, itemDeleteSuccess)
+    }
+
+    @Test
+    fun deleteNotFound() = runRepoTest {
+        val result = repo.deleteBook(
+            DbBookIdRequest(
+                id = notFoundId,
+                lock = itemDeleteSuccess.lock
+            )
+        )
+
+        assertIs<DbErrorResponse>(result)
+        val error = result.errors.firstOrNull { e -> e.code == "repo-not-found" }
+        assertNotNull(error)
+        assertEquals(error.field, "id")
+    }
+
+    @Test
+    fun deleteConcurrencyError() = runRepoTest {
+        val result = repo.deleteBook(
+            DbBookIdRequest(
+                id = itemDeleteSuccess.id,
+                lock = LockModel("bad-lock-value")
+            )
+        )
+
+        assertIs<DbErrorResponse>(result)
+        val error = result.errors.firstOrNull { e -> e.code == "repo-concurrency" }
+        assertNotNull(error)
+        assertEquals(error.field, "lock")
+    }
+}

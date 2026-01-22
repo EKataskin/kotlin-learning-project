@@ -16,4 +16,9 @@ class BookRepoInMemoryTests {
     inner class BookRepoInMemoryUpdateTest : BookRepoUpdateTest(
         repo = BookRepoInMemory()
     )
+
+    @Nested
+    inner class BookRepoInMemoryDeleteTest : BookRepoDeleteTest(
+        repo = BookRepoInMemory()
+    )
 }
