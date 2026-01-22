@@ -12,10 +12,15 @@ fun runRepoTest(testBody: suspend TestScope.() -> Unit) = runTest(timeout = 1.mi
     }
 }
 
-fun createTestModel(tag: String): BookModel = BookModel(
-    title = "Title for $tag",
-    author = "Author for $tag",
-    notes = tag,
+fun createTestModel(
+    tag: String,
+    author: String = "Author for $tag",
+    title: String = "Title for $tag",
+    notes: String = "Notes for $tag",
+) = BookModel(
+    author = author,
+    title = title,
+    notes = notes,
     year = 2000 + tag.length
 )
 

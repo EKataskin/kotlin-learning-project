@@ -1,9 +1,6 @@
 import common.IBookRepoInitializable
 import org.junit.jupiter.api.Test
-import ru.ekataskin.booktracker.common.models.BookIdModel
-import ru.ekataskin.booktracker.common.models.BookModel
-import ru.ekataskin.booktracker.common.models.BookStateModel
-import ru.ekataskin.booktracker.common.models.LockModel
+import ru.ekataskin.booktracker.common.models.*
 import ru.ekataskin.booktracker.common.repo.*
 import kotlin.test.*
 
@@ -194,5 +191,48 @@ open class BookRepoDeleteTest(
         val error = result.errors.firstOrNull { e -> e.code == "repo-concurrency" }
         assertNotNull(error)
         assertEquals(error.field, "lock")
+    }
+}
+
+open class BookRepoSearchTest(
+    val repo: IBookRepoInitializable
+) {
+    val repoItems: List<BookModel>
+    val searchString: String = "Kotlin"
+
+    init {
+        repoItems = repo.save(
+            listOf(
+                createTestModel("search1", title = "Kotlin Programming"),
+                createTestModel("search2", title = "Java Programming"),
+                createTestModel("search3", title = "javascript", notes = "Advanced Kotlin"),
+                createTestModel("search4", notes = "Kotlin for Beginners"),
+            )
+        ).toList()
+    }
+
+    @Test
+    fun searchByString() = runRepoTest {
+        val result = repo.searchBook(
+            DbBookFilterRequest(
+                filter = BookFilterModel(searchString = searchString)
+            )
+        )
+
+        assertIs<DbBooksResponse>(result)
+        val expected = listOf(repoItems[0], repoItems[2], repoItems[3]).sortedBy { it.id.value() }
+        assertEquals(expected, result.data.sortedBy { it.id.value() })
+    }
+
+    @Test
+    fun searchNoResults() = runRepoTest {
+        val result = repo.searchBook(
+            DbBookFilterRequest(
+                filter = BookFilterModel(searchString = "NonExistingText")
+            )
+        )
+
+        assertIs<DbBooksResponse>(result)
+        assertTrue(result.data.isEmpty())
     }
 }
